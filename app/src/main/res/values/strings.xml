@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">My Application</string>
+    <string name="search_button_description">Search Button</string>
+    <string name="_1">1</string>
+    <string name="null_text">消息</string>
+    <string name="robot_response">消息</string>
+    <string name="user_information">消息</string>
+    <string name="front_page">首页</string>
+    <string name="todo">TODO</string>
+    <string name="user_name">用户名</string>
+    <string name="robot_name">牛马润</string>
+    <string name="side_menu_item_01">item_01</string>
+    <string name="side_menu_item_02">item_02</string>
+    <string name="side_menu_item_03">item_03</string>
+</resources>

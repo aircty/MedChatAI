@@ -1,0 +1,61 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="8dp"
+    android:background="@drawable/message_background"
+    android:baselineAligned="false"
+    android:padding="16dp"
+    android:orientation="horizontal"
+    android:gravity="end"> <!-- 整个布局靠右对齐 -->
+
+    <!-- Chat Bubble -->
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/rounded_gray_border"
+        android:padding="16dp"
+        android:orientation="vertical"
+        android:layout_gravity="end"> <!-- 气泡靠右对齐 -->
+
+        <TextView
+            android:id="@+id/tv_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/user_information"
+            android:textColor="#455A64"
+            android:textSize="16sp" />
+
+        <ImageView
+            android:id="@+id/iv_image"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:visibility="gone" />
+    </LinearLayout>
+
+    <!-- User Information -->
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="end"
+        android:layout_gravity="end"
+        tools:ignore="UseCompoundDrawables">
+
+        <ImageView
+            android:id="@+id/iv_user"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:contentDescription="@string/todo"
+            android:src="@drawable/ic_avatar" />
+
+        <TextView
+            android:id="@+id/tv_user"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:textColor="@android:color/black"
+            android:textSize="16sp"
+            android:text="@string/user_name" />
+    </LinearLayout>
+</LinearLayout>
