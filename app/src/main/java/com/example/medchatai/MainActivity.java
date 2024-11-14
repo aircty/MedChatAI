@@ -12,7 +12,6 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Handler;
 
 import android.provider.MediaStore;
 import android.text.Editable;
@@ -22,10 +21,10 @@ import android.text.SpannableStringBuilder;
 import android.text.Spanned;
 import android.text.style.ImageSpan;
 import android.util.Log;
+
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -36,6 +35,10 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+
+import com.example.medchatai.model.ChatCompletion;
+import com.example.medchatai.model.ChatCompletionRequest;
+import com.example.medchatai.model.UserInputModel;
 
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -51,6 +54,7 @@ public class MainActivity extends AppCompatActivity {
     private EditText editText;
     private ListView conversationList;
     private Context context;
+    private UserInputModel userInputModel;
 
     @SuppressLint({"MissingInflatedId", "CutPasteId"})
     @Override
@@ -68,7 +72,8 @@ public class MainActivity extends AppCompatActivity {
         ListView listView = findViewById(R.id.conversationList);
         drawerLayout = findViewById(R.id.drawer_layout);
         editText = findViewById(R.id.et_Input);
-        conversationList  = findViewById(R.id.conversationList);
+        conversationList = findViewById(R.id.conversationList);
+        userInputModel = new UserInputModel();
 
 
         // 点击相册访问权限
@@ -141,34 +146,38 @@ public class MainActivity extends AppCompatActivity {
 
                 // 添加剩余的纯文本
                 String remainingText = textWithImage.toString().trim();
+                userInputModel.setText(combinedText.toString());
                 combinedText.append(remainingText);
 
                 // 创建复合消息
-                messages.add(new Message(combinedText.toString(), combinedImages, Message.TYPE_COMPOSITE, Message.TYPE_USER));
+                messages.add(new Message(userInputModel.getText(), combinedImages, Message.TYPE_COMPOSITE, Message.TYPE_USER));
                 Log.d("MainActivity", "Added composite message with text: " + combinedText.toString());
             } else {
                 Log.d("MainActivity", "No ImageSpans found in the input");
 
                 // 将纯文本消息添加到消息列表
                 String text = textWithImage.toString().trim();
+                userInputModel.setText(text);
                 if (!text.isEmpty()) {
-                    messages.add(new Message(text, Message.TYPE_TEXT, Message.TYPE_USER));
+                    messages.add(new Message(userInputModel.getText(), Message.TYPE_TEXT, Message.TYPE_USER));
                     Log.d("MainActivity", "Added text message: " + text);
                 }
+
             }
         } else {
             Log.d("MainActivity", "Handling user input without Spannable text");
 
             // 将纯文本消息添加到消息列表
             String text = editText.getText().toString().trim();
+            userInputModel.setText(text);
             if (!text.isEmpty()) {
-                messages.add(new Message(text, Message.TYPE_TEXT, Message.TYPE_USER));
+                messages.add(new Message(userInputModel.getText(), Message.TYPE_TEXT, Message.TYPE_USER));
                 Log.d("MainActivity", "Added text message: " + text);
             }
         }
 
         // 模拟机器人的回复
-        simulateBotResponse();
+        simulateBotResponse(userInputModel);
 
         // 清空 EditText
         editText.setText("");
@@ -181,14 +190,14 @@ public class MainActivity extends AppCompatActivity {
 
 
     // 模拟AI回复
-    private void simulateBotResponse() {
-        new Handler().postDelayed(() -> {
-            String botResponse = "你好！我叫牛马润！";
-            messages.add(new Message(botResponse, Message.TYPE_TEXT, Message.TYPE_BOT));
-            adapter.notifyDataSetChanged();
-            // 滚动到底部显示最新消息
-            conversationList.smoothScrollToPosition(adapter.getCount() - 1);
-        }, 1000); // 模拟1秒的延迟
+    private void simulateBotResponse(UserInputModel userInputModel) {
+        Log.d("MainActivity", "用户输入:" + userInputModel.getText());
+//
+//        Log.d("MainActivity", "AI的回答： " + chatCompletion.getText());
+//        messages.add(new Message(chatCompletion.getText(), Message.TYPE_TEXT, Message.TYPE_BOT));
+        adapter.notifyDataSetChanged();
+        // 滚动到底部显示最新消息
+        conversationList.smoothScrollToPosition(adapter.getCount() - 1);// 模拟1秒的延迟
     }
 
     @SuppressLint("QueryPermissionsNeeded")
@@ -261,4 +270,6 @@ public class MainActivity extends AppCompatActivity {
             }
         }
     }
+
+
 }

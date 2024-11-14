@@ -108,13 +108,16 @@
             <EditText
                 android:id="@+id/et_Input"
                 android:layout_width="0dp"
-                android:layout_height="40dp"
+                android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_weight="40"
-                android:background="@drawable/rounded_gray_border"
+                android:minLines="1"
+                android:maxLines="5"
+                android:inputType="textMultiLine"
                 android:hint="@string/null_text"
-                android:inputType="text"
-                android:padding="10dp" />
+                android:background="@drawable/rounded_gray_border"
+                android:padding="10dp"
+                android:maxHeight="200dp" />
 
             <ImageButton
                 android:id="@+id/btn_search"

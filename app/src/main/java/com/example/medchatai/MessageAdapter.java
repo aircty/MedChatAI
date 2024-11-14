@@ -10,13 +10,15 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.core.graphics.drawable.RoundedBitmapDrawable;
+import androidx.core.graphics.drawable.RoundedBitmapDrawableFactory;
 
 import java.util.List;
 import java.util.Objects;
 
 public class MessageAdapter extends ArrayAdapter<Message> {
     private static final int TYPE_USER = 0;
-    private static final int TYPE_ROBOT = 1;
+    private static final int cornerRadius = 20;
 
     public MessageAdapter(Context context, List<Message> messages) {
         super(context, 0, messages);
@@ -53,25 +55,46 @@ public class MessageAdapter extends ArrayAdapter<Message> {
             textView.setVisibility(View.VISIBLE);
             imageView.setVisibility(View.GONE);
         } else if (message.getType() == Message.TYPE_IMAGE) {
-            imageView.setImageBitmap(message.getImage());
+            Bitmap imageBitmap = message.getImage();
+            if (imageBitmap != null) {
+                setRoundedBitmapDrawable(imageBitmap, imageView);
+                setSquare(imageView);
+            }
             imageView.setVisibility(View.VISIBLE);
             textView.setVisibility(View.GONE);
         } else if (message.getType() == Message.TYPE_COMPOSITE) {
-            if (message.getContent() != null) {
+            // 显示图片
+            if (!message.getImages().isEmpty()) {
+                Bitmap imageBitmap = message.getImages().get(0);
+                setRoundedBitmapDrawable(imageBitmap, imageView);
+                setSquare(imageView);
+                imageView.setVisibility(View.VISIBLE);
+            } else {
+                imageView.setVisibility(View.GONE);
+            }
+
+            // 显示文字
+            if (message.getContent() != null && !message.getContent().isEmpty()) {
                 textView.setText(message.getContent());
                 textView.setVisibility(View.VISIBLE);
             } else {
                 textView.setVisibility(View.GONE);
             }
-
-            if (message.getImages() != null && !message.getImages().isEmpty()) {
-                imageView.setImageBitmap(message.getImages().get(0)); // 显示第一个图片
-                imageView.setVisibility(View.VISIBLE);
-            } else {
-                imageView.setVisibility(View.GONE);
-            }
         }
 
         return convertView;
+    }
+
+    private void setSquare(ImageView imageView) {
+        ViewGroup.LayoutParams layoutParams = imageView.getLayoutParams();
+        layoutParams.width = 100; // 设置宽度
+        layoutParams.height = 100; // 设置高度
+        imageView.setLayoutParams(layoutParams);
+    }
+
+    private void setRoundedBitmapDrawable(Bitmap imageBitmap, ImageView imageView) {
+        RoundedBitmapDrawable roundedBitmapDrawable = RoundedBitmapDrawableFactory.create(getContext().getResources(), imageBitmap);
+        roundedBitmapDrawable.setCornerRadius(cornerRadius); // 设置圆角半径，单位是像素
+        imageView.setImageDrawable(roundedBitmapDrawable);
     }
 }

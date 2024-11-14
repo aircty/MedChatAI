@@ -1,5 +1,7 @@
 [versions]
 agp = "8.6.0"
+javaxJson = "1.1.4"
+javaxJsonApi = "1.1.4"
 junit = "4.13.2"
 junitVersion = "1.1.5"
 espressoCore = "3.5.1"
@@ -9,6 +11,8 @@ activity = "1.8.0"
 constraintlayout = "2.1.4"
 
 [libraries]
+javax-json = { module = "org.glassfish:javax.json", version.ref = "javaxJson" }
+javax-json-api = { module = "javax.json:javax.json-api", version.ref = "javaxJsonApi" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 ext-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
 espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
