@@ -44,6 +44,9 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
+
+
+
 public class MainActivity extends AppCompatActivity {
     private static final int REQUEST_CODE_PERMISSIONS = 1;
     private static final int REQUEST_CODE_SELECT_IMAGE = 2;
