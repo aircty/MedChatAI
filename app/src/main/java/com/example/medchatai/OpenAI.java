@@ -5,6 +5,7 @@ import android.util.Log;
 import com.example.medchatai.model.ChatCompletionRequest;
 
 import org.json.JSONObject;
+
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.InputStreamReader;
@@ -13,19 +14,17 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 public class OpenAI {
-    private String content;
-    private final ChatCompletionRequest completionRequest;
+    private final String baseURL;
 
-    public OpenAI(ChatCompletionRequest completionRequest){
-        this.completionRequest=completionRequest;
+    public OpenAI(String baseURL) {
+        this.baseURL = baseURL;
     }
-//    public ChatCompletionRequest buildRequest(String text) {
-//
-//    }
-    public String CompletionCreate() {
+
+    public String ChatCompletionCreate(ChatCompletionRequest completionRequest) {
+        String content;
         try {
             // URL
-            URL url = new URL("https://apifoxmock.com/m1/5457605-5132817-default");
+            URL url = new URL(baseURL);
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 
             conn.setDoOutput(true);
@@ -35,7 +34,7 @@ public class OpenAI {
             conn.setUseCaches(false);
             // 设置传递方式
             conn.setRequestMethod("POST");
-            Log.d("Method", "Method: "+conn.getRequestMethod());
+            Log.d("Method", "Method: " + conn.getRequestMethod());
             // 设置维持长连接
             conn.setRequestProperty("Connection", "Keep-Alive");
             // 设置文件字符集:
@@ -48,7 +47,7 @@ public class OpenAI {
             conn.setRequestProperty("contentType", "application/json");
             // 开始连接请求
             conn.connect();
-            OutputStream out = new DataOutputStream(conn.getOutputStream()) ;
+            OutputStream out = new DataOutputStream(conn.getOutputStream());
 
             // Read response
             int responseCode = conn.getResponseCode();
@@ -65,7 +64,7 @@ public class OpenAI {
 
                     // Parse the response JSON to get the content
                     JSONObject jsonResponse = new JSONObject(response.toString());
-                     content = jsonResponse.getJSONArray("choices")
+                    content = jsonResponse.getJSONArray("choices")
                             .getJSONObject(0)
                             .getJSONObject("message")
                             .getString("content");

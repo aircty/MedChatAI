@@ -71,7 +71,3 @@ public class ChatCompletionRequest {
     }
 }
 
-class ChatMessage {
-    public String content;
-    public String role;
-}
